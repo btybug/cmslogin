@@ -1,0 +1,21 @@
+{
+    "name": "btybug.hook/cmslogin",
+    "description": "cms login description",
+    "type": "plugin",
+    "route": "bty-login",
+    "authors": [
+        {
+            "name": "terakyan",
+            "email": "edo.terakyan@gmail.com"
+        }
+    ],
+    "require": {},
+	"autoload": {
+        "psr-4": {
+            "BtyBugHook\\CmsLogin\\": "src/"
+        },
+        "files": [
+            "src/index.php"
+        ]
+    }
+}
