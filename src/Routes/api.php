@@ -14,5 +14,5 @@ use Illuminate\Http\Request;
 */
 
 
-Route::get('/callback', 'IndexController@getCallback', true)->name('cms_login_callback');
+Route::get('/cms-callback', 'IndexController@getCallback', true)->name('cms_login_callback');
 Route::get('/login/{token}', 'IndexController@getLogin', true)->name('cms_login_login');

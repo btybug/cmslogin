@@ -3,9 +3,7 @@
 namespace BtyBugHook\CmsLogin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\PhpJsonParser;
 use Btybug\User\Repository\UserRepository;
-use BtyBugHook\ApiUser\Models\SocialAccount;
 use BtyBugHook\ApiUser\Repository\SocialAccountRepository;
 use Illuminate\Http\Request;
 
@@ -18,7 +16,28 @@ class IndexController extends Controller
 
     public function getCallback(Request $request, UserRepository $userRepository, SocialAccountRepository $accountRepository)
     {
-        $userData = json_decode($request->get('userData'), true);
+
+
+        $http = new \GuzzleHttp\Client();
+
+        $response = $http->post('http://forms.albumbugs.com/oauth/token', [
+            'form_params' => [
+                'grant_type' => 'authorization_code',
+                'client_id' => '9',
+                'client_secret' => 'NZVkuE15N4v2MpGSzxOZsPp0xJoYohR7RhX56mnu',
+                'redirect_uri' => url('bty-login/cms-callback'),
+                'code' => $request->code,
+            ],
+        ]);
+        $authResponse = json_decode((string)$response->getBody(), true);
+        $response = $http->request('GET', 'http://forms.albumbugs.com/bty-api/user', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => $authResponse['token_type'].' ' . $authResponse['access_token'],
+            ],
+        ]);
+        $auth=json_decode((string)$response->getBody(), true);
+        $userData = $auth['user'];
         $authResponse = $request->get('authResponse');
         if (count($userData)) {
             $user = $userRepository->findBy('email', $userData['email']);
@@ -27,8 +46,8 @@ class IndexController extends Controller
                 \DB::table('users')->insert([
                     'username' => $userData['email'],
                     'email' => $userData['email'],
-                    'f_name' => $userData['first_name'],
-                    'l_name' => $userData['last_name'],
+                    'f_name' => $userData['f_name'],
+                    'l_name' => $userData['l_name'],
                     'password' => \Hash::make($password),
                     'status' => 'active',
                     'membership_id' => 1,
@@ -42,13 +61,13 @@ class IndexController extends Controller
             if ($user) {
                 $account = $accountRepository->updateOrCreate(['provider' => 'btybug',
                     'user_id' => $user->id,], [
-                    'access_token' => $authResponse['accessToken'],
-                    'exp_date' => $authResponse['expiresIn'],
-                    'refresh_token' => $authResponse['signedRequest'],
+                    'access_token' => $authResponse['access_token'],
+                    'exp_date' => $authResponse['expires_in'],
+                    'refresh_token' => $authResponse['refresh_token'],
                     'provider' => 'btybug',
                     'user_id' => $user->id,
                 ]);
-
+                \Auth::loginUsingId($user->id, true);
                 return \Response::json(['error' => false, 'message' => 'User Logged IN', 'login' => $account->access_token]);
             }
 
