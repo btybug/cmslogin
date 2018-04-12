@@ -1,4 +1,4 @@
 @extends('btybug::layouts.admin')
 @section('content')
-    api FB
+    api login cms
 @stop

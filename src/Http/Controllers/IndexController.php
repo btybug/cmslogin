@@ -40,12 +40,12 @@ class IndexController extends Controller
 
 
             if ($user) {
-                $account = $accountRepository->updateOrCreate(['provider' => 'facebook',
+                $account = $accountRepository->updateOrCreate(['provider' => 'btybug',
                     'user_id' => $user->id,], [
                     'access_token' => $authResponse['accessToken'],
                     'exp_date' => $authResponse['expiresIn'],
                     'refresh_token' => $authResponse['signedRequest'],
-                    'provider' => 'facebook',
+                    'provider' => 'btybug',
                     'user_id' => $user->id,
                 ]);
 
@@ -60,13 +60,13 @@ class IndexController extends Controller
 
     public function getSettings()
     {
-        $data = json_decode(BBgetApiSettings('FBlogin')->val, true);
+        $data = json_decode(BBgetApiSettings('Cmslogin')->val, true);
         return view('apiuser::fbapi', compact('data'));
     }
 
     public function postSettings(Request $request)
     {
-        BBeditApisettings('FBlogin', $request->except('_token'));
+        BBeditApisettings('Cmslogin', $request->except('_token'));
         return redirect()->back()->with('message', 'Saved');
     }
 

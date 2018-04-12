@@ -31,7 +31,7 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../views', 'cmslogin');
 
         \Eventy::action('admin.menus', [
-            "title" => "FB",
+            "title" => "CMS login",
             "custom-link" => "#",
             "icon" => "fa fa-anchor",
             "is_core" => "yes",

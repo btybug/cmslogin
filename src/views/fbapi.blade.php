@@ -3,7 +3,7 @@
     {!! Form::model($data,['class' => 'form-horizontal']) !!}
     <fieldset>
         <!-- Form Name -->
-        <legend>FB Settings</legend>
+        <legend>Cms login Settings</legend>
 
         <!-- Text input-->
         <div class="form-group">
