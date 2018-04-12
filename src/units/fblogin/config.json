@@ -1,0 +1,17 @@
+{
+  "title": "Facebook Login",
+  "author": "Edo",
+  "site": "http:\/\/bootydev.co.uk",
+  "version": "1.0",
+  "type": "unit",
+  "description": "Facebook Login unit",
+  "have_setting": 1,
+  "image": "screenshot.png",
+  "slug": "fblogin",
+  "folder": "fblogin",
+  "created_at": 1490088665,
+  "is_core": 1,
+  "place": "frontend",
+  "tags": ["app","oauth","fb","product"],
+  "path": "app\/Plugins\/vendor\/btybug.hook\/apiuser\/src\/units\/fblogin"
+}
